@@ -12,8 +12,11 @@
 
 #include "my_lib.h"
 
-#define NUM_THREADS 10
-#define NUM_ITERATIONS 1000000
+//#define NUM_THREADS 10
+//#define NUM_ITERATIONS 1000000
+
+#define NUM_THREADS 3
+#define NUM_ITERATIONS 5
 
 #define DEBUG 1
 
@@ -35,7 +38,7 @@ int main(int args, char *argv[])
 
     if (nameStack)
     {
-        printf("Threads: %i, Iterations: %i \n", NUM_THREADS, NUM_ITERATIONS);
+        printf("Hilos: %i, Iteraciones: %i \n", NUM_THREADS, NUM_ITERATIONS);
         stack = init_stack(nameStack);
 
         // Crear los hilos
@@ -44,7 +47,7 @@ int main(int args, char *argv[])
         for (int i = 0; i < NUM_THREADS; i++)
         {
             pthread_create(&threads[i], NULL, worker, NULL);
-            printf("\n%d - Hilo %ld creado", i, threads[i]);
+            printf("\n%d - Hilo %ld creado\n", i, threads[i]);
         }
 
         // Esperar hasta que los hilos acaben
@@ -57,7 +60,7 @@ int main(int args, char *argv[])
         int var = my_stack_write(stack, argv[1]);
         printf("\nElementos escritos de la pila al fichero: %d", var);
         var = my_stack_purge(stack);
-        printf("\nBytes totales: %d", var);
+        printf("\nBytes eliminados: %d\n", var);
 
         return EXIT_SUCCESS;
     }
@@ -137,7 +140,7 @@ void *worker(void *ptr)
         // Sección crítica nº1
         pthread_mutex_lock(&mutex);
 #ifdef DEBUG
-        printf("Soy el hilo %ld ejecutando pop\n", pthread_self());
+        printf("\nSoy el hilo %ld ejecutando pop", pthread_self());
 #endif
         data = my_stack_pop(stack);
         pthread_mutex_unlock(&mutex);
@@ -147,7 +150,7 @@ void *worker(void *ptr)
         // Sección crítica nº2
         pthread_mutex_lock(&mutex);
 #ifdef DEBUG
-        printf("Soy el hilo %ld ejecutando push\n", pthread_self());
+        printf("\nSoy el hilo %ld ejecutando push", pthread_self());
 #endif
         my_stack_push(stack, data);
         i++;

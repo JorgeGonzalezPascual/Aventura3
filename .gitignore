@@ -7,3 +7,17 @@
 /s2-6el
 /s2-6el0
 /test.sh
+
+# SIN EXTENSIÓN
+*
+!/**/
+!*.*
+
+#Object file
+*.o
+*.ko
+*.obj
+*.elf
+*.sh
+*.json
+*.sh
