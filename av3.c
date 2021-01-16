@@ -47,7 +47,7 @@ int main(int args, char *argv[])
         for (int i = 0; i < NUM_THREADS; i++)
         {
             pthread_create(&threads[i], NULL, worker, NULL);
-            printf("\n%d - Hilo %ld creado\n", i, threads[i]);
+            printf("\n\n%d - Hilo %ld creado", i, threads[i]);
         }
 
         // Esperar hasta que los hilos acaben
@@ -58,7 +58,7 @@ int main(int args, char *argv[])
 
         // Guardar en la pila
         int var = my_stack_write(stack, argv[1]);
-        printf("\nElementos escritos de la pila al fichero: %d", var);
+        printf("\n\nElementos escritos de la pila al fichero: %d", var);
         var = my_stack_purge(stack);
         printf("\nBytes eliminados: %d\n", var);
 
