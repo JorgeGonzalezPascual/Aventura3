@@ -12,10 +12,7 @@
 
 #include "my_lib.h"
 
-//#define NUM_THREADS 10
-//#define NUM_ITERATIONS 1000000
-
-#define NUM_THREADS 3
+#define NUM_THREADS 5
 #define NUM_ITERATIONS 5
 
 #define DEBUG 1
@@ -47,7 +44,7 @@ int main(int args, char *argv[])
         for (int i = 0; i < NUM_THREADS; i++)
         {
             pthread_create(&threads[i], NULL, worker, NULL);
-            printf("\n\n%d - Hilo %ld creado", i, threads[i]);
+            printf("\n%d - Hilo %ld creado", i, threads[i]);
         }
 
         // Esperar hasta que los hilos acaben
@@ -82,7 +79,7 @@ struct my_stack *init_stack(char *file)
     //Si la pila existe
     if (stack)
     {
-        printf("\nLongitud inicial de la pila: %d", my_stack_len(stack));
+        printf("\nLongitud inicial de la pila: %d\n", my_stack_len(stack));
 
         int len = my_stack_len(stack);
         // Si no hay 10 elemenotos
