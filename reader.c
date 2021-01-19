@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
             int min = INT_MAX;
             int max = 0;
             int average = 0;
-            printf("\nLongitud pila: %d\n\n", length);
+            printf("Longitud pila: %d\n", length);
 
             // Mientras la pila no esté vacía            
             for (int i = 0; i < NUM_THREADS; i++)
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
             
             average = sum / NUM_THREADS;
 
-            printf("\nElementos: %d Suma: %d Mínimo: %d, Máximo: %d, Media: %d\n", length, sum, min, max, average);
+            printf("Elementos: %d Suma: %d Mínimo: %d, Máximo: %d, Media: %d\n\n", length, sum, min, max, average);
         }
         else
         {

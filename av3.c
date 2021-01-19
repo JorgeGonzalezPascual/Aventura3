@@ -45,7 +45,7 @@ int main(int args, char *argv[])
         for (int i = 0; i < NUM_THREADS; i++)
         {
             pthread_create(&threads[i], NULL, worker, NULL);
-            printf("\n%d) Hilo %ld creado", i, threads[i]);
+            printf("%d) Hilo %ld creado\n", i, threads[i]);
         }
 
         // Esperar hasta que los hilos acaben
@@ -56,10 +56,10 @@ int main(int args, char *argv[])
 
         // Guardar en la pila
         int var = my_stack_write(stack, argv[1]);
-        printf("\nLongitud de la pila: %d\n", my_stack_len(stack));
-        printf("Elementos escritos de la pila al fichero: %d", var);
+        printf("Longitud de la pila: %d\n", my_stack_len(stack));
+        printf("Elementos escritos de la pila al fichero: %d\n", var);
         var = my_stack_purge(stack);
-        printf("\nBytes eliminados: %d\n", var);
+        printf("Bytes eliminados: %d\n\n", var);
 
         return EXIT_SUCCESS;
     }
@@ -81,7 +81,7 @@ struct my_stack *init_stack(char *file)
     // Si la pila existe
     if (stack)
     {
-        printf("\nLongitud inicial de la pila: %d\n", my_stack_len(stack));
+        printf("Longitud inicial de la pila: %d\n", my_stack_len(stack));
 
         // Si no hay 10 elemenotos
         if (my_stack_len(stack) != NUM_THREADS)
@@ -101,7 +101,7 @@ struct my_stack *init_stack(char *file)
         filling();
     }
 
-    printf("\nLongitud final de la nueva pila: %d\n", my_stack_len(stack));
+    printf("Longitud final de la nueva pila: %d\n", my_stack_len(stack));
 
     return stack;
 }
