@@ -1,27 +1,29 @@
+
 /**
  * Sistemas Operativos - AVENTURA 3
  *
  * Jorge González Pascual - Lluís Barca Pons - Joan Martorell Ferriol
  */
 
-//#define _POSIX_C_SOURCE 200112L
-
+// Librerias
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 
 #include "my_lib.h"
 
-#define NUM_THREADS 5
-#define NUM_ITERATIONS 5
+// Constantes
+#define NUM_THREADS 10
+#define NUM_ITERATIONS 1000000
 
-#define DEBUG 1
+#define DEBUG 0
 
-//Funciones
+// Funciones
 struct my_stack *init_stack(char *file);
 void *worker(void *ptr);
+int testing();
 
-//Variables
+// Variables
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static struct my_stack *stack;
 
@@ -35,8 +37,8 @@ int main(int args, char *argv[])
 
     if (nameStack)
     {
-        printf("Hilos: %i, Iteraciones: %i \n", NUM_THREADS, NUM_ITERATIONS);
         stack = init_stack(nameStack);
+        printf("Hilos: %i, Iteraciones: %i \n", NUM_THREADS, NUM_ITERATIONS);
 
         // Crear los hilos
         pthread_t threads[NUM_THREADS];
@@ -44,7 +46,7 @@ int main(int args, char *argv[])
         for (int i = 0; i < NUM_THREADS; i++)
         {
             pthread_create(&threads[i], NULL, worker, NULL);
-            printf("\n%d - Hilo %ld creado", i, threads[i]);
+            printf("\n%d) Hilo %ld creado", i, threads[i]);
         }
 
         // Esperar hasta que los hilos acaben
@@ -55,7 +57,8 @@ int main(int args, char *argv[])
 
         // Guardar en la pila
         int var = my_stack_write(stack, argv[1]);
-        printf("\n\nElementos escritos de la pila al fichero: %d", var);
+        printf("\nLongitud de la pila: %d\n", my_stack_len(stack));
+        printf("Elementos escritos de la pila al fichero: %d", var);
         var = my_stack_purge(stack);
         printf("\nBytes eliminados: %d\n", var);
 
@@ -70,91 +73,104 @@ int main(int args, char *argv[])
 
 /**
  * M
- */ 
+ */
 struct my_stack *init_stack(char *file)
 {
     struct my_stack *stack;
     stack = my_stack_read(file);
 
-    //Si la pila existe
+    // Si la pila existe
     if (stack)
     {
         printf("\nLongitud inicial de la pila: %d\n", my_stack_len(stack));
 
-        int len = my_stack_len(stack);
         // Si no hay 10 elemenotos
-        if (len != NUM_THREADS)
+        if (my_stack_len(stack) != NUM_THREADS)
         {
             // Si < 10: rellenar los restantes
-            if (len < NUM_THREADS)
+            if (my_stack_len(stack) < NUM_THREADS)
             {
-                //Rellenamos la pila
-                for (int i = len; i < NUM_THREADS; i++)
+                // Rellenamos la pila
+                while (my_stack_len(stack) != NUM_THREADS)
                 {
                     int *data = malloc(sizeof(int));
                     *data = 0;
+                    printf("%d\n", *data);
                     my_stack_push(stack, data);
                 }
+                //testing();
             }
-            // Si > 10: Nos quedeamos con los 10 primeros
-            else
-            {
-                //Vaciamos la pila
-                while (my_stack_len(stack) != NUM_THREADS)
-                {
-                    my_stack_pop(stack);
-                }
-            }
+            // Si > 10: Los ignoramos
         }
     }
     // Si no esta creada la pila la creamos
     else
     {
-        stack = my_stack_init(sizeof(int));
-
-        //Imprimir algo??
-        while (my_stack_len(stack) != NUM_THREADS)
-        {
-            int *data = malloc(sizeof(int));
-            *data = 0;
-            my_stack_push(stack, data);
-        }
+       //testing();
     }
 
-    //Imprimir algo???
+    printf("\nLongitud final de la nueva pila: %d\n", my_stack_len(stack));
 
     return stack;
+}
+
+int testing(){
+    printf("Stack->size: %ld\n", sizeof(int));
+    stack = my_stack_init(sizeof(int));
+    printf("Contenido inicial de la pila:\n");
+        void **pts = malloc(NUM_THREADS * sizeof(int));
+
+        for (int i = 0; i < my_stack_len(stack); i++)
+        {
+            //*pts = my_stack_pop(stack);
+            //pts++;
+            printf("%p\n", my_stack_pop(stack));
+        }
+
+        //for (int i = 0; i < my_stack_len(stack); i++)
+        //{
+        //    my_stack_push(stack, &pts);
+        //    pts--;
+       //}
+        
+    printf("Longitud inicial de la pila: %d\n", my_stack_len(stack));
+    printf("Apilar contenido para el tratamiento:\n");
+        
+    while (my_stack_len(stack) != NUM_THREADS)
+    {
+        int *data = malloc(sizeof(int));
+        *data = 0;
+        printf("%d\n", *data);
+        my_stack_push(stack, data);
+    }
+    return 0;
 }
 
 void *worker(void *ptr)
 {
     int i = 0;
 
-    int *data;
-
     while (i < NUM_ITERATIONS)
     {
         // Sección crítica nº1
         pthread_mutex_lock(&mutex);
-#ifdef DEBUG
+#if DEBUG
         printf("\nSoy el hilo %ld ejecutando pop", pthread_self());
 #endif
-        data = my_stack_pop(stack);
+        int *data = my_stack_pop(stack);
         pthread_mutex_unlock(&mutex);
 
         (*data)++;
 
         // Sección crítica nº2
         pthread_mutex_lock(&mutex);
-#ifdef DEBUG
+#if DEBUG
         printf("\nSoy el hilo %ld ejecutando push", pthread_self());
 #endif
         my_stack_push(stack, data);
         i++;
         pthread_mutex_unlock(&mutex);
-
-        //i++;
     }
 
-    pthread_exit(NULL);
+    pthread_exit(0);
 }

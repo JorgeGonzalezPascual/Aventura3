@@ -5,11 +5,11 @@ LDFLAGS=-pthread
 SOURCES=my_lib.c av3.c reader.c
 LIBRARIES=my_lib.o
 INCLUDES=my_lib.h
-PROGRAMS= av3 reader
+PROGRAMS=av3 reader
 OBJS=$(SOURCES:.c=.o)
  
 all: $(OBJS) $(PROGRAMS)
- 
+
 #$(PROGRAMS): $(LIBRARIES) $(INCLUDES)
 #   $(CC) $(LDFLAGS) $(LIBRARIES) $@.o -o $@
 

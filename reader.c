@@ -23,34 +23,35 @@ int main(int argc, char *argv[])
             int min = INT_MAX;
             int max = 0;
             int average = 0;
-            printf("Longitud pila: %d", length);
+            printf("\nLongitud pila: %d\n\n", length);
 
-            // Mientras la pila no esté vacía
-            while (my_stack_len(stack))
+            // Mientras la pila no esté vacía            
+            for (int i = 0; i < 10; i++)
             {
                 int *data;
                 data = my_stack_pop(stack);
 
                 sum += *data;
 
-                if (*data < min) 
+                if (*(data) < min) 
                 {
                     min = *data;
-                }
-                else if (*data > max) 
+                } else if (*data > max) 
                 {
                     max = *data;
                 }
                 
-                printf("\n%d\n", *data);
+                printf("%d\n", *data);
             }
-
+            
             if (length) 
             {
                 average = sum / length;
+            } else {
+                min = 0;
             }
 
-            printf("Elementos: %d Suma: %d Mínimo: %d, Máximo: %d, Media: %d\n", length, sum, min, max, average);
+            printf("\nElementos: %d Suma: %d Mínimo: %d, Máximo: %d, Media: %d\n", length, sum, min, max, average);
         }
         else
         {
