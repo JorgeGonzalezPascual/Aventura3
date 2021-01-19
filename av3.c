@@ -1,4 +1,3 @@
-
 /**
  * Sistemas Operativos - AVENTURA 3
  *
@@ -21,7 +20,7 @@
 // Funciones
 struct my_stack *init_stack(char *file);
 void *worker(void *ptr);
-int testing();
+void filling();
 
 // Variables
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -72,11 +71,11 @@ int main(int args, char *argv[])
 }
 
 /**
- * M
+ * Método que inicializa la pila
  */
 struct my_stack *init_stack(char *file)
 {
-    struct my_stack *stack;
+    //struct my_stack *stack;
     stack = my_stack_read(file);
 
     // Si la pila existe
@@ -90,15 +89,8 @@ struct my_stack *init_stack(char *file)
             // Si < 10: rellenar los restantes
             if (my_stack_len(stack) < NUM_THREADS)
             {
-                // Rellenamos la pila
-                while (my_stack_len(stack) != NUM_THREADS)
-                {
-                    int *data = malloc(sizeof(int));
-                    *data = 0;
-                    printf("%d\n", *data);
-                    my_stack_push(stack, data);
-                }
-                //testing();
+                // Rellenamos la pila hasta NUM_THREADS
+                filling();
             }
             // Si > 10: Los ignoramos
         }
@@ -106,7 +98,7 @@ struct my_stack *init_stack(char *file)
     // Si no esta creada la pila la creamos
     else
     {
-       //testing();
+        filling();
     }
 
     printf("\nLongitud final de la nueva pila: %d\n", my_stack_len(stack));
@@ -114,28 +106,28 @@ struct my_stack *init_stack(char *file)
     return stack;
 }
 
-int testing(){
+/**
+ * Método que rellena la pila con los valores que faltan para su tratamiento
+ */
+void filling()
+{
+    struct my_stack *auxStack;
+
     printf("Stack->size: %ld\n", sizeof(int));
-    stack = my_stack_init(sizeof(int));
+    //stack = my_stack_init(sizeof(int));
     printf("Contenido inicial de la pila:\n");
-        void **pts = malloc(NUM_THREADS * sizeof(int));
 
-        for (int i = 0; i < my_stack_len(stack); i++)
-        {
-            //*pts = my_stack_pop(stack);
-            //pts++;
-            printf("%p\n", my_stack_pop(stack));
-        }
+    auxStack = stack;
+    while (my_stack_len(auxStack) != 0)
+    {
+        int *data;
+        data = my_stack_pop(auxStack);
+        printf("%d\n", *data);
+    }
 
-        //for (int i = 0; i < my_stack_len(stack); i++)
-        //{
-        //    my_stack_push(stack, &pts);
-        //    pts--;
-       //}
-        
     printf("Longitud inicial de la pila: %d\n", my_stack_len(stack));
     printf("Apilar contenido para el tratamiento:\n");
-        
+
     while (my_stack_len(stack) != NUM_THREADS)
     {
         int *data = malloc(sizeof(int));
@@ -143,9 +135,11 @@ int testing(){
         printf("%d\n", *data);
         my_stack_push(stack, data);
     }
-    return 0;
 }
 
+/**
+ * Método que regula la actividad de los hilos mediante un semáforo
+ */ 
 void *worker(void *ptr)
 {
     int i = 0;
