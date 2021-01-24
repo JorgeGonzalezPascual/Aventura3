@@ -6,6 +6,8 @@
 /s1-14el0
 /s2-6el
 /s2-6el0
+gonzalez_barca_martorell/
+
 # /test.sh
 
 # SIN EXTENSIÓN
@@ -21,3 +23,4 @@
 *.sh
 *.json
 *.sh
+*.gz
