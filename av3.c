@@ -56,6 +56,7 @@ int main(int args, char *argv[])
 
         // Guardar en la pila
         int var = my_stack_write(stack, argv[1]);
+        pthread_exit(0);
         printf("Longitud de la pila: %d\n", my_stack_len(stack));
         printf("Elementos escritos de la pila al fichero: %d\n", var);
         var = my_stack_purge(stack);
@@ -203,5 +204,5 @@ void *worker(void *ptr)
         //
     }
 
-    pthread_exit(0);
+    pthread_exit(NULL);
 }
