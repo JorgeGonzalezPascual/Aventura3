@@ -56,12 +56,13 @@ int main(int args, char *argv[])
 
         // Guardar en la pila
         int var = my_stack_write(stack, argv[1]);
-        pthread_exit(0);
+        //pthread_exit(0);
         printf("Longitud de la pila: %d\n", my_stack_len(stack));
         printf("Elementos escritos de la pila al fichero: %d\n", var);
         var = my_stack_purge(stack);
         printf("Bytes eliminados: %d\n\n", var);
 
+        pthread_exit(0);
         return EXIT_SUCCESS;
     }
     else
@@ -79,11 +80,11 @@ int main(int args, char *argv[])
  */
 struct my_stack *init_stack(char *file)
 {
-    //struct my_stack *stack;
+    
     stack = my_stack_read(file);
 
     // Si la pila existe
-    if (my_stack_len(stack) > 0)
+    if (stack)
     {
         printf("Longitud inicial de la pila: %d\n", my_stack_len(stack));
 
@@ -98,7 +99,8 @@ struct my_stack *init_stack(char *file)
     // Si no esta creada la pila la creamos
     else
     {
-        stack = my_stack_init(sizeof(int *));
+        printf("Pila vacía. Se procede a crear una:\n");
+        stack = my_stack_init(sizeof(int));
         printf("Stack->size: %ld\n", sizeof(int));
         filling();
         printf("Longitud final de la nueva pila: %d\n", my_stack_len(stack));
@@ -132,7 +134,7 @@ void filling()
             fprintf(stderr, "No hay espacio en memoria dinámica disponible en este momento.\n");
             return;
         }
-        
+
         data = my_stack_pop(stack);
         printf("%d\n", *data);
         my_stack_push(auxStack, data);
