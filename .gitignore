@@ -1,0 +1,26 @@
+/av3
+/av3.o
+/my_lib.o
+/reader.o
+/s1-14el
+/s1-14el0
+/s2-6el
+/s2-6el0
+gonzalez_barca_martorell/
+
+# /test.sh
+
+# SIN EXTENSIÓN
+*
+!/**/
+!*.*
+
+#Object file
+*.o
+*.ko
+*.obj
+*.elf
+*.sh
+*.json
+*.sh
+*.gz
